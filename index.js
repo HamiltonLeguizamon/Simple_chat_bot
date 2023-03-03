@@ -1,23 +1,40 @@
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
-app.use(express.static(__dirname + '/public'));
+const port = process.env.PORT || 3000;
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-        io.emit('chat message', msg);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
+// Iniciar el servidor
+server.listen(port, () => {
+  console.log('Servidor iniciado en el puerto ' + port);
 });
 
-http.listen(3000, function(){
-    console.log('listening on *:3000');
+// Servir la página HTML
+app.use(express.static(__dirname + '/public'));
+
+// Manejar las conexiones de los clientes
+io.on('connection', (socket) => {
+  console.log('Usuario conectado');
+
+  // Solicitar el nickname del usuario
+  socket.emit('nickname request');
+
+  // Manejar el nickname del usuario
+  socket.on('nickname', (nickname) => {
+    console.log('Usuario ' + nickname + ' ha ingresado al chat');
+    io.emit('joined', nickname);
+
+    // Manejar los mensajes del usuario
+    socket.on('chat message', (message) => {
+      console.log('Mensaje recibido: ' + message);
+      io.emit('chat message', {nickname: nickname, message: message});
+    });
+
+    // Manejar la desconexión del usuario
+    socket.on('disconnect', () => {
+      console.log('Usuario ' + nickname + ' ha salido del chat');
+      io.emit('left', nickname);
+    });
+  });
 });

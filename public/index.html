@@ -1,31 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Chat Bot</title>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+<head>
+	<meta charset="UTF-8">
+	<title>Chat</title>
+</head>
+<body>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      $(function () {
-        var socket = io();
+	<div id="messages-container"></div>
+    
+	<form id="message-form">
+		<input type="text" id="message-input" placeholder="Escribe un mensaje">
+		<button type="submit">Enviar</button>
+	</form>
 
-        $('form').submit(function(e){
-          e.preventDefault(); 
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
-        });
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/main.js"></script>
 
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-        });
-      });
-    </script>
-  </body>
+</body>
 </html>
