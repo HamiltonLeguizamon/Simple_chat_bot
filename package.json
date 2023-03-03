@@ -1,0 +1,28 @@
+{
+  "name": "chat_bot",
+  "version": "1.0.0",
+  "description": "Simple chat-bot environment",
+  "main": "index.js",
+  "scripts": {
+    "test": "run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HamiltonLeguizamon/chat_bot.git"
+  },
+  "keywords": [
+    "chat;",
+    "bot;",
+    "app"
+  ],
+  "author": "Hamilton Leguizamon Moya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HamiltonLeguizamon/chat_bot/issues"
+  },
+  "homepage": "https://github.com/HamiltonLeguizamon/chat_bot#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  }
+}
