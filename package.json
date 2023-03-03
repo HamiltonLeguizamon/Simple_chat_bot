@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HamiltonLeguizamon/chat_bot.git"
+    "url": "git+https://github.com/HamiltonLeguizamon/simple_chat_bot.git"
   },
   "keywords": [
     "chat;",
@@ -18,9 +18,9 @@
   "author": "Hamilton Leguizamon Moya",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HamiltonLeguizamon/chat_bot/issues"
+    "url": "https://github.com/HamiltonLeguizamon/simple_chat_bot/issues"
   },
-  "homepage": "https://github.com/HamiltonLeguizamon/chat_bot#readme",
+  "homepage": "https://github.com/HamiltonLeguizamon/simple_chat_bot#readme",
   "dependencies": {
     "express": "^4.18.2",
     "socket.io": "^4.6.1"
