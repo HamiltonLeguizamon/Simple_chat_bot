@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Chat</title>
+    <meta charset="UTF-8">
+    <title>Chat con Bot</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-	<div id="messages-container"></div>
+    <div id="messages-container">
+        <div id="messages"></div>
+    </div>
     
-	<form id="message-form">
-		<input type="text" id="message-input" placeholder="Escribe un mensaje">
-		<button type="submit">Enviar</button>
-	</form>
+    <div id="typing-container">
+        <div id="typing-indicator">
+            <span>•</span>
+            <span>•</span>
+            <span>•</span>
+        </div>
+    </div>
 
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="/main.js"></script>
+    <form id="message-form" class="message-form">
+        <input type="text" name="message" placeholder="Escribe tu mensaje aquí...">
+        <button>Enviar</button>
+    </form>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
