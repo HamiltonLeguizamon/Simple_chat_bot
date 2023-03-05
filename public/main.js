@@ -1,40 +1,48 @@
 const socket = io();
 
-// Solicitar el nickname del usuario
-socket.on('nickname request', () => {
-	const nickname = prompt('Ingresa tu nickname:');
-	socket.emit('nickname', nickname);
+// Seleccionar elementos del DOM
+const messageForm = document.querySelector('#message-form');
+const messageInput = messageForm.querySelector('input[name="message"]');
+const messages = document.querySelector('#messages');
+const typingIndicator = document.querySelector('#typing-indicator');
+
+
+// Escuchar evento 'connect' del socket
+socket.on('connect', () => {
+	console.log('Conectado al servidor');
 });
 
-// Manejar los mensajes del usuario
-document.getElementById('message-form').addEventListener('submit', (event) => {
+// Escuchar evento 'disconnect' del socket
+socket.on('disconnect', () => {
+	console.log('Desconectado del servidor');
+});
+
+// Escuchar evento 'message' del socket
+socket.on('message', message => {
+    console.log(message);
+    // Ocultar animación
+    typingIndicator.classList.remove('visible');
+    addMessage(message);
+});
+
+// Agregar mensaje a la interfaz de usuario
+function addMessage(message) {
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    messages.appendChild(messageElement);
+}
+
+// Escuchar evento 'submit' del formulario
+messageForm.addEventListener('submit', event => {
 	event.preventDefault();
-	const messageInput = document.getElementById('message-input');
 	const message = messageInput.value;
+	addMessage(`Tú: ${message}`);
+	socket.emit('sendMessage', message);
 	messageInput.value = '';
-	socket.emit('chat message', message);
+	messageInput.focus();
 });
 
-// Mostrar los mensajes recibidos
-socket.on('chat message', (data) => {
-	const messagesContainer = document.getElementById('messages-container');
-	const messageElement = document.createElement('div');
-	messageElement.innerText = `${data.nickname}: ${data.message}`;
-	messagesContainer.appendChild(messageElement);
-});
-
-// Mostrar cuando un usuario se une al chat
-socket.on('joined', (nickname) => {
-	const messagesContainer = document.getElementById('messages-container');
-	const messageElement = document.createElement('div');
-	messageElement.innerText = `${nickname} se ha unido al chat`;
-	messagesContainer.appendChild(messageElement);
-});
-
-// Mostrar cuando un usuario deja el chat
-socket.on('left', (nickname) => {
-	const messagesContainer = document.getElementById('messages-container');
-	const messageElement = document.createElement('div');
-	messageElement.innerText = `${nickname} ha dejado el chat`;
-	messagesContainer.appendChild(messageElement);
+socket.on('showTypingIndicator', () => {
+    // Mostrar animación
+    typingIndicator.classList.add('visible');
 });
