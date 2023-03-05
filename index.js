@@ -1,40 +1,52 @@
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app);
+const http = require('http');
+const server = http.createServer(app);
 const io = require('socket.io')(server);
+const { v4: uuidv4 } = require('uuid');
 
-const port = process.env.PORT || 3000;
+app.use(express.static(__dirname + '/public')); // Configurar carpeta pública
 
-// Iniciar el servidor
-server.listen(port, () => {
-  console.log('Servidor iniciado en el puerto ' + port);
+// Escuchar evento 'connection' del socket
+io.on('connection', socket => {
+	console.log('Nuevo cliente conectado');
+
+	// Escuchar evento 'sendMessage' del socket
+	socket.on('sendMessage', message => {
+        console.log(`Mensaje recibido: ${message}`);
+        // Mostrar animación
+        io.emit('showTypingIndicator');
+    
+        // Esperar 1 segundo antes de enviar la respuesta
+        setTimeout(() => {
+            const botMessage = getBotMessage();
+            io.emit('message', `Bot: ${botMessage}`);
+        }, 2000);
+    });
+
+	// Escuchar evento 'disconnect' del socket
+	socket.on('disconnect', () => {
+		console.log('Cliente desconectado');
+	});
 });
 
-// Servir la página HTML
-app.use(express.static(__dirname + '/public'));
+// Generar mensaje aleatorio del bot
+function getBotMessage() {
+	const botMessages = [
+		'Hola, ¿cómo estás?',
+		'¿Qué tal tu día?',
+		'¿En qué puedo ayudarte?',
+		'¿Has escuchado alguna canción buena últimamente?',
+		'¿Cuál es tu comida favorita?',
+		'¿Qué te gustaría hacer hoy?',
+		'¿Has visto alguna película interesante últimamente?'
+	];
+	const randomIndex = Math.floor(Math.random() * botMessages.length);
+	return botMessages[randomIndex];
+}
 
-// Manejar las conexiones de los clientes
-io.on('connection', (socket) => {
-  console.log('Usuario conectado');
-
-  // Solicitar el nickname del usuario
-  socket.emit('nickname request');
-
-  // Manejar el nickname del usuario
-  socket.on('nickname', (nickname) => {
-    console.log('Usuario ' + nickname + ' ha ingresado al chat');
-    io.emit('joined', nickname);
-
-    // Manejar los mensajes del usuario
-    socket.on('chat message', (message) => {
-      console.log('Mensaje recibido: ' + message);
-      io.emit('chat message', {nickname: nickname, message: message});
-    });
-
-    // Manejar la desconexión del usuario
-    socket.on('disconnect', () => {
-      console.log('Usuario ' + nickname + ' ha salido del chat');
-      io.emit('left', nickname);
-    });
-  });
+// Iniciar servidor
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+	console.log(`Servidor iniciado en puerto ${PORT}`);
 });

@@ -1,0 +1,67 @@
+#typing-container {
+    text-align: center;
+}
+
+#typing-indicator {
+    display: none;
+    margin-bottom: 10px;
+}
+
+#typing-indicator.visible {
+    display: block;
+}
+
+#typing-indicator span {
+    display: inline-block;
+    animation: jump 1s infinite;
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+/* Estilos para el contenedor de mensajes */
+#messages-container {
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#messages {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+.message-form {
+    display: flex;
+    align-items: center;
+}
+
+.message-form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+}
+
+.message-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    margin-left: 10px;
+}

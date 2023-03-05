@@ -23,6 +23,7 @@
   "homepage": "https://github.com/HamiltonLeguizamon/simple_chat_bot#readme",
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "uuid": "^9.0.0"
   }
 }
